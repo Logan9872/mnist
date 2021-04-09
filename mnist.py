@@ -9,6 +9,11 @@ from tensorflow.examples.tutorials.mnist import  input_data
 import pylab
 import tensorflow as tf
 
+import os
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+
 
 #一、 导入数据集
 mnist = input_data.read_data_sets("MINST_daya/", one_hot=True)
