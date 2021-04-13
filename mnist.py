@@ -22,7 +22,7 @@ print("-------------------------------------------------------------------------
 im = mnist.train.images[1]
 im = im.reshape(-1, 28)
 pylab.imshow(im)
-pylab.show()
+# pylab.show()
 print("-----------------------------------------------------------------------------------")
 
 #  二、分析图片特点定义变量
@@ -126,7 +126,7 @@ with tf.Session() as sess2:
 # 读取训练模型的权重
 NewCheck =tf.train.NewCheckpointReader("mnist/521model.ckpt")
 print("debug_string:\n")
-pprint.pprint(NewCheck.debug_string().decode("utf-8")) # 类型是str
+pprint.pprint(NewCheck.debug_string().decode("utf-8"))  # 类型是str
 
 reader = tf.train.NewCheckpointReader("mnist/521model.ckpt")
 
@@ -135,10 +135,11 @@ variables = reader.get_variable_to_shape_map()
 for v in variables:
     w = reader.get_tensor(v)
     print("-----------------------------------------------------------------------------------")
-    print("权重w的数据类型为：")
-    print(type(w))
+    print("权重w的数据类型为：", type(w), "\n")
     print("-----------------------------------------------------------------------------------")
-    # print(w.shape)
-    # print (w[0])
-    print('权重w')
-    print(w)
+    print('w的维度：', w.shape, "\n")
+    print("-----------------------------------------------------------------------------------")
+    print('第一个W为:', w[0], "\n")
+    print("-----------------------------------------------------------------------------------")
+    print('权重w：', w, "\n")
+    print("-----------------------------------------------------------------------------------")
