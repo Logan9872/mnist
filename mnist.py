@@ -6,7 +6,8 @@ import os
 from tensorflow.examples.tutorials.mnist import input_data
 import pylab
 import tensorflow as tf
-tf.logging.set_verbosity(tf.logging.ERROR)
+import pprint # 使用pprint 提高打印的可读性
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 warnings.filterwarnings('ignore')
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = '3'
 
@@ -49,7 +50,7 @@ learning_rate = 0.01
 # 使用梯度下降优化器
 optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
 
-training_epochs = 1000  # 将整个训练样本迭代次数
+training_epochs = 100  # 将整个训练样本迭代次数
 batch_size = 100  # 在训练过程中每次随机抽取100条数据进行训练
 display_step = 1  # 迭代的步数
 saver = tf.train.Saver()
@@ -121,3 +122,23 @@ with tf.Session() as sess2:
     pylab.imshow(im)
     pylab.show()
     print("-----------------------------------------------------------------------------------")
+
+# 读取训练模型的权重
+NewCheck =tf.train.NewCheckpointReader("mnist/521model.ckpt")
+print("debug_string:\n")
+pprint.pprint(NewCheck.debug_string().decode("utf-8")) # 类型是str
+
+reader = tf.train.NewCheckpointReader("mnist/521model.ckpt")
+
+variables = reader.get_variable_to_shape_map()
+
+for v in variables:
+    w = reader.get_tensor(v)
+    print("-----------------------------------------------------------------------------------")
+    print("权重w的数据类型为：")
+    print(type(w))
+    print("-----------------------------------------------------------------------------------")
+    # print(w.shape)
+    # print (w[0])
+    print('权重w')
+    print(w)
