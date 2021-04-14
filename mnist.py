@@ -19,7 +19,9 @@ print("数据的shape：", mnist.train.images.shape)
 print("-----------------------------------------------------------------------------------")
 
 # 展示数据集中的一张图片
-im = mnist.train.images[1]
+im = mnist.train.images[0]
+
+# -1代表第一个参数为止，但形状为图片
 im = im.reshape(-1, 28)
 pylab.imshow(im)
 # pylab.show()
@@ -46,11 +48,11 @@ pred = tf.nn.softmax(tf.matmul(x, W) + b)  # softmax分类
 cost = tf.reduce_mean(-tf.reduce_sum(y * tf.log(pred), reduction_indices=1))
 
 # 参数设置
-learning_rate = 0.01
+learning_rate = 0.1
 # 使用梯度下降优化器
 optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
 
-training_epochs = 100  # 将整个训练样本迭代次数
+training_epochs = 10  # 将整个训练样本迭代次数
 batch_size = 100  # 在训练过程中每次随机抽取100条数据进行训练
 display_step = 1  # 迭代的步数
 saver = tf.train.Saver()
@@ -109,7 +111,8 @@ with tf.Session() as sess2:
     output = tf.argmax(pred, 1)
     batch_xs, batch_ys = mnist.train.next_batch(2)
     outputval, predv = sess2.run([output, pred], feed_dict={x: batch_xs})
-    print(outputval, pred, batch_ys)
+    print("预测结果：")
+    print("预测目标图片：", outputval, pred, "预测分类结果：", batch_ys)
 
     im = batch_xs[0]
     im = im.reshape(-1, 28)
@@ -137,9 +140,9 @@ for v in variables:
     print("-----------------------------------------------------------------------------------")
     print("权重w的数据类型为：", type(w), "\n")
     print("-----------------------------------------------------------------------------------")
-    print('w的维度：', w.shape, "\n")
+    print('权重w的维度：', w.shape, "\n")
     print("-----------------------------------------------------------------------------------")
-    print('第一个W为:', w[0], "\n")
+    print('第一层输入权重W为:', w[0], "\n")
     print("-----------------------------------------------------------------------------------")
     print('权重w：', w, "\n")
     print("-----------------------------------------------------------------------------------")
