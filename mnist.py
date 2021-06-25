@@ -1,12 +1,13 @@
 # By < 路畅达&田策文 组>
 # 2021.3.31
 
-import warnings
-import os
-from tensorflow.examples.tutorials.mnist import input_data
-import pylab
-import tensorflow as tf
-import pprint # 使用pprint 提高打印的可读性
+import warnings  # 可以用来控制是否发出警告消息，警告过滤器是一些匹配规则和动作的序列
+import os  # operating system库os模块提供的就是各种 Python 程序与操作系统进行交互的接口。
+from tensorflow.examples.tutorials.mnist import input_data  # 数据接口库，主要用于引入minst数据库
+import pylab  # 绘图库
+import tensorflow as tf  # 机器学习算法库
+import pprint  # 使用pprint 提高打印的可读性
+
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 warnings.filterwarnings('ignore')
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = '3'
@@ -34,8 +35,9 @@ tf.reset_default_graph()
 # 定义占位符
 x = tf.placeholder(tf.float32, [None, 784])  # mnist data 维度28*28=784
 y = tf.placeholder(tf.float32, [None, 10])  # 0-9 数字 ==>10class
-# 三、 构建模型
 
+
+# 三、 构建模型
 # 定义学习参数
 # 设置模型的权重
 W = tf.Variable(tf.random_normal([784, 10]))  # W的维度是[784, 10]
@@ -48,11 +50,11 @@ pred = tf.nn.softmax(tf.matmul(x, W) + b)  # softmax分类
 cost = tf.reduce_mean(-tf.reduce_sum(y * tf.log(pred), reduction_indices=1))
 
 # 参数设置
-learning_rate = 0.1
+learning_rate = 0.01
 # 使用梯度下降优化器
 optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
 
-training_epochs = 10  # 将整个训练样本迭代次数
+training_epochs = 100  # 将整个训练样本迭代次数
 batch_size = 100  # 在训练过程中每次随机抽取100条数据进行训练
 display_step = 1  # 迭代的步数
 saver = tf.train.Saver()
@@ -84,7 +86,7 @@ with tf.Session() as sess:
     print("-----------------------------------------------------------------------------------")
 
     # 模型测试
-    correct_prediction = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
+    # correct_prediction = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
     # 计算准确率
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     print("准确度：", accuracy.eval({x: mnist.test.images, y: mnist.test.labels}))
@@ -103,7 +105,7 @@ with tf.Session() as sess2:
     saver.restore(sess2, model_path)
 
     # 测试 model
-    # correct_prediction = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
+    correct_prediction = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
     # 计算准确率
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     print("准确度：", accuracy.eval({x: mnist.test.images, y: mnist.test.labels}))
